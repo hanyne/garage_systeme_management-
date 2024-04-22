@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="GarageModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Clients">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nom" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Prenom" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Adresse" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="Telephone" Type="varchar" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Employes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nom" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Prenom" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Poste" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Salaire" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Fournisseurs">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nom" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Adresse" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="Telephone" Type="varchar" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <EntityType Name="LigneReparation">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Quantite" Type="int" Nullable="false" />
+    <Property Name="ReparationID" Type="int" Nullable="false" />
+    <Property Name="PieceDetacheID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PiecesDetachees">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nom" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="Prix" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+    <Property Name="Unite" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="FournisseurID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Reparations">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="Cout" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+    <Property Name="VehiculeID" Type="int" Nullable="false" />
+    <Property Name="EmployeID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="Utilisateurs">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NomUtilisateur" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="MotDePasse" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Vehicules">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Marque" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Modele" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Annee" Type="int" Nullable="false" />
+    <Property Name="Prix" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+    <Property Name="ClientID" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__LigneRepa__Piece__5BE2A6F2">
+    <End Role="PiecesDetachees" Type="Self.PiecesDetachees" Multiplicity="1" />
+    <End Role="LigneReparation" Type="Self.LigneReparation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PiecesDetachees">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="LigneReparation">
+        <PropertyRef Name="PieceDetacheID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__LigneRepa__Repar__5AEE82B9">
+    <End Role="Reparations" Type="Self.Reparations" Multiplicity="1" />
+    <End Role="LigneReparation" Type="Self.LigneReparation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Reparations">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="LigneReparation">
+        <PropertyRef Name="ReparationID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__PiecesDet__Fourn__5812160E">
+    <End Role="Fournisseurs" Type="Self.Fournisseurs" Multiplicity="1" />
+    <End Role="PiecesDetachees" Type="Self.PiecesDetachees" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Fournisseurs">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PiecesDetachees">
+        <PropertyRef Name="FournisseurID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Reparatio__Emplo__534D60F1">
+    <End Role="Employes" Type="Self.Employes" Multiplicity="1" />
+    <End Role="Reparations" Type="Self.Reparations" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employes">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Reparations">
+        <PropertyRef Name="EmployeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Reparatio__Vehic__52593CB8">
+    <End Role="Vehicules" Type="Self.Vehicules" Multiplicity="1" />
+    <End Role="Reparations" Type="Self.Reparations" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Vehicules">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Reparations">
+        <PropertyRef Name="VehiculeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Vehicules__Clien__4D94879B">
+    <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+    <End Role="Vehicules" Type="Self.Vehicules" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clients">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Vehicules">
+        <PropertyRef Name="ClientID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="GarageModelStoreContainer">
+    <EntitySet Name="Clients" EntityType="Self.Clients" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Employes" EntityType="Self.Employes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Fournisseurs" EntityType="Self.Fournisseurs" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LigneReparation" EntityType="Self.LigneReparation" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PiecesDetachees" EntityType="Self.PiecesDetachees" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Reparations" EntityType="Self.Reparations" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Utilisateurs" EntityType="Self.Utilisateurs" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Vehicules" EntityType="Self.Vehicules" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__LigneRepa__Piece__5BE2A6F2" Association="Self.FK__LigneRepa__Piece__5BE2A6F2">
+      <End Role="PiecesDetachees" EntitySet="PiecesDetachees" />
+      <End Role="LigneReparation" EntitySet="LigneReparation" />
+    </AssociationSet>
+    <AssociationSet Name="FK__LigneRepa__Repar__5AEE82B9" Association="Self.FK__LigneRepa__Repar__5AEE82B9">
+      <End Role="Reparations" EntitySet="Reparations" />
+      <End Role="LigneReparation" EntitySet="LigneReparation" />
+    </AssociationSet>
+    <AssociationSet Name="FK__PiecesDet__Fourn__5812160E" Association="Self.FK__PiecesDet__Fourn__5812160E">
+      <End Role="Fournisseurs" EntitySet="Fournisseurs" />
+      <End Role="PiecesDetachees" EntitySet="PiecesDetachees" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Reparatio__Emplo__534D60F1" Association="Self.FK__Reparatio__Emplo__534D60F1">
+      <End Role="Employes" EntitySet="Employes" />
+      <End Role="Reparations" EntitySet="Reparations" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Reparatio__Vehic__52593CB8" Association="Self.FK__Reparatio__Vehic__52593CB8">
+      <End Role="Vehicules" EntitySet="Vehicules" />
+      <End Role="Reparations" EntitySet="Reparations" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Vehicules__Clien__4D94879B" Association="Self.FK__Vehicules__Clien__4D94879B">
+      <End Role="Clients" EntitySet="Clients" />
+      <End Role="Vehicules" EntitySet="Vehicules" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
